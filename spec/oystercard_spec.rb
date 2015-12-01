@@ -15,7 +15,6 @@ describe Oystercard do
       it 'is expected to add the argument passed to the balance variable' do
         expect(oystercard.balance).to eq 10
       end
-
     end
 
     describe '#touch_in' do
@@ -24,7 +23,6 @@ describe Oystercard do
         oystercard.touch_in
         expect(oystercard).to be_in_journey
       end
-
     end
 
     describe '#touch_out' do
@@ -38,7 +36,6 @@ describe Oystercard do
         expect{oystercard.touch_out}.to change{oystercard.balance}.by (-Oystercard::FARE)
       end
     end
-
   end
 
   context 'while card does not have a working balance' do
@@ -53,7 +50,6 @@ describe Oystercard do
         cap_exceeded = "Cap exceeded £#{Oystercard::CARD_CAP}"
         expect { oystercard.top_up(1) }.to raise_error cap_exceeded
       end
-
     end
 
     describe '#in_journey?' do
@@ -61,7 +57,6 @@ describe Oystercard do
       it 'is in_journey? false on initialisation' do
         expect(oystercard.in_journey?).to be false
       end
-
     end
 
     describe '#touch_in' do
@@ -69,8 +64,6 @@ describe Oystercard do
       it 'is expected to raise an error if balance is below £1 at time of touch in' do
         expect{ oystercard.touch_in }.to raise_error "Balance too low, please top up"
       end
-
     end
   end
-
 end

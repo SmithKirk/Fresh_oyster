@@ -60,7 +60,12 @@ describe 'feature_test' do
     expect{oystercard.touch_out}.to change{oystercard.balance}.by (-Oystercard::FARE)
   end
 
+  # In order to pay for my journey
+  # As a customer
+  # I need to know where I've travelled from
+  it '' do
 
+  end
 
 
 end
