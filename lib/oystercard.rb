@@ -8,6 +8,7 @@ class Oystercard
   def initialize
     @balance = 0
     @traveling = false
+    @entry_station = nil
   end
 
   def top_up(amount)
@@ -19,15 +20,18 @@ class Oystercard
     traveling
   end
 
-  def touch_in
+  def touch_in(station)
     fail "Balance too low, please top up" if balance_too_low?
     @traveling = true
+    @entry_station = station
   end
 
   def touch_out
     @traveling = false
     deduct(FARE)
   end
+
+
 
   private
 

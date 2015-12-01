@@ -2,6 +2,8 @@ require 'oystercard'
 
 describe Oystercard do
   subject(:oystercard) { described_class.new }
+  let(:min_balance){Oystercard::MIN_BALANCE}
+  let(:entry_station){Oystercard::entry_station}
 
   it 'is expected to initialise with balance 0 ' do
     expect(oystercard.balance).to eq 0
@@ -20,14 +22,14 @@ describe Oystercard do
     describe '#touch_in' do
 
       it 'is expected to change in_journey? to true' do
-        oystercard.touch_in
+        oystercard.touch_in(station)
         expect(oystercard).to be_in_journey
       end
     end
 
     describe '#touch_out' do
       it 'is expected to change in_journey? to false' do
-        oystercard.touch_in
+        oystercard.touch_in(station)
         oystercard.touch_out
         expect(oystercard).not_to be_in_journey
       end
@@ -62,8 +64,14 @@ describe Oystercard do
     describe '#touch_in' do
 
       it 'is expected to raise an error if balance is below £1 at time of touch in' do
-        expect{ oystercard.touch_in }.to raise_error "Balance too low, please top up"
+        expect{ oystercard.touch_in(station) }.to raise_error "Balance too low, please top up"
       end
+      it 'remembers entry station after touch in' do
+        oystercard.top_up(min_balance)
+        expect(oystercard.touch_in(station)).to eq entry_station
+      end
+
+      it { is_expected.to respond_to(:touch_in).with(1).argument }
     end
   end
 end

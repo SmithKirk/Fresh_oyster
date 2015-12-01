@@ -5,6 +5,7 @@ describe 'feature_test' do
   let(:card_cap){Oystercard::CARD_CAP}
   let(:min_balance){Oystercard::MIN_BALANCE}
   let(:balance){Oystercard::balance}
+  let(:station){'station'}
 
 
   # In order to use public transport
@@ -35,13 +36,13 @@ describe 'feature_test' do
   # I need to touch in
   it 'traveling becomes true after touch_in' do
     oystercard.top_up(min_balance)
-    oystercard.touch_in
+    oystercard.touch_in(station)
     expect(oystercard).to be_in_journey
   end
   # and out
   it 'traveling becomes false after touch_out' do
     oystercard.top_up(min_balance)
-    oystercard.touch_in
+    oystercard.touch_in(station)
     oystercard.touch_out
     expect(oystercard).not_to be_in_journey
   end
@@ -50,7 +51,7 @@ describe 'feature_test' do
   # As a customer
   # I need to have the minimum amount for a single journey
   it 'touch_in to raise error if below card below min_balance' do
-    expect{oystercard.touch_in}.to raise_error "Balance too low, please top up"
+    expect{oystercard.touch_in(station)}.to raise_error "Balance too low, please top up"
   end
 
   #In order to pay for my journey
@@ -60,4 +61,10 @@ describe 'feature_test' do
     expect{oystercard.touch_out}.to change{oystercard.balance}.by (-Oystercard::FARE)
   end
 
+  it 'remembers entry station after touch in' do
+    oystercard.top_up(min_balance)
+    expect(oystercard.touch_in(station)).to eq entry_station
+  end
+
+  it { is_expected.to respond_to(:touch_in).with(1).argument }
 end
