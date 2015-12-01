@@ -10,23 +10,10 @@ describe Oystercard do
   context 'while card has a working balance' do
 
     before { oystercard.top_up(10) }
-
     describe '#top_up' do
 
       it 'is expected to add the argument passed to the balance variable' do
         expect(oystercard.balance).to eq 10
-      end
-
-    end
-
-    describe '#deduct' do
-
-      it 'is expected to return the current balance minus argument passed' do
-        expect(oystercard.deduct(5)).to eq 5
-      end
-
-      it 'is expected to reduce current balance by argument passed' do
-        expect{ oystercard.deduct(8) }.to change{ subject.balance }.by (-8)
       end
 
     end
@@ -48,7 +35,7 @@ describe Oystercard do
       end
 
       it 'is expected to reduce balance by fare on touch_out' do
-        expect{oystercard.touch_out}.to change{oystercard.balance}.by -(Oystercard::FARE)
+        expect{oystercard.touch_out}.to change{oystercard.balance}.by (-Oystercard::FARE)
       end
     end
 

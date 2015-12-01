@@ -30,13 +30,6 @@ describe 'feature_test' do
     expect{oystercard.top_up(min_balance)}.to raise_error "Cap exceeded £#{Oystercard::CARD_CAP}"
   end
 
-  # In order to pay for my journey
-  # As a customer
-  # I need my fare deducted from my card
-  it 'to deduct fare from card' do
-    expect{oystercard.deduct(8) }.to change{oystercard.balance }.by (-8)
-  end
-
   # In order to get through the barriers
   # As a customer
   # I need to touch in
@@ -64,7 +57,7 @@ describe 'feature_test' do
   # As a customer
   # When my journey is complete, I need the correct amount deducted from my card
   it 'reduce balance by fare amount on touch_out' do
-    expect{oystercard.touch_out}.to change{oystercard.balance}.by -(Oystercard::FARE)
+    expect{oystercard.touch_out}.to change{oystercard.balance}.by (-Oystercard::FARE)
   end
 
 

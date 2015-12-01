@@ -15,10 +15,6 @@ class Oystercard
     @balance += amount
   end
 
-  def deduct(amount)
-    @balance -= amount
-  end
-
   def in_journey?
     traveling
   end
@@ -44,5 +40,10 @@ class Oystercard
   def balance_too_low?
     balance < MIN_BALANCE
   end
+
+  def deduct(amount)
+    @balance -= FARE
+  end
+
 
 end
