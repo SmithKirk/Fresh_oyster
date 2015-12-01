@@ -60,5 +60,5 @@ describe 'feature_test' do
     expect{oystercard.touch_out}.to change{oystercard.balance}.by (-Oystercard::FARE)
   end
 
-ggggg
+ffffff
 end
