@@ -46,6 +46,10 @@ describe Oystercard do
         oystercard.touch_out
         expect(oystercard).not_to be_in_journey
       end
+
+      it 'is expected to reduce balance by fare on touch_out' do
+        expect{oystercard.touch_out}.to change{oystercard.balance}.by -(Oystercard::FARE)
+      end
     end
 
   end

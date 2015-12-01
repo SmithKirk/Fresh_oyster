@@ -60,5 +60,14 @@ describe 'feature_test' do
     expect{oystercard.touch_in}.to raise_error "Balance too low, please top up"
   end
 
+  #In order to pay for my journey
+  # As a customer
+  # When my journey is complete, I need the correct amount deducted from my card
+  it 'reduce balance by fare amount on touch_out' do
+    expect{oystercard.touch_out}.to change{oystercard.balance}.by -(Oystercard::FARE)
+  end
+
+
+
 
 end

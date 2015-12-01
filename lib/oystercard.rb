@@ -3,6 +3,7 @@ class Oystercard
   attr_reader :balance
   CARD_CAP = 90
   MIN_BALANCE = 1
+  FARE = 1
 
   def initialize
     @balance = 0
@@ -29,6 +30,7 @@ class Oystercard
 
   def touch_out
     @traveling = false
+    deduct(FARE)
   end
 
   private
