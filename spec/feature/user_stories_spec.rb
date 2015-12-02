@@ -1,10 +1,11 @@
+require 'station'
 describe 'User Stories' do
   let(:oystercard){Oystercard.new}
-  let(:entry_station){ double(:entry_station) }
   let(:exit_station){ double(:exit_station) }
   let(:card_cap){Oystercard::CARD_CAP}
   let(:fare){Oystercard::FARE}
   let(:balance){Oystercard::balance}
+  let(:station){Station.new("bank",1)}
 
 
 
@@ -19,7 +20,7 @@ describe 'User Stories' do
   # As a customer
   # I need to have the minimum amount for a single journey
   it 'touch_in to raise error if balance of card is below fare' do
-    expect{oystercard.touch_in(entry_station)}.to raise_error "Balance too low, please top up"
+    expect{oystercard.touch_in(station)}.to raise_error "Balance too low, please top up"
   end
 
   #In order to pay for my journey
@@ -52,7 +53,7 @@ describe 'User Stories' do
     context 'touched in oysters' do
 
       before do
-        oystercard.touch_in(entry_station)
+        oystercard.touch_in(station)
       end
 
       # In order to get through the barriers
@@ -71,11 +72,11 @@ describe 'User Stories' do
       # As a customer
       # I need to know where I've travelled from
       it 'remembers entry station after touch in' do
-        expect(oystercard.entry_station).to eq entry_station
+        expect(oystercard.current_trip[:in]).to eq station
       end
 
       it 'entry station is cleared at touch out' do
-        expect{ oystercard.touch_out(exit_station) }.to change{ oystercard.entry_station }.to eq nil
+        expect{ oystercard.touch_out(station) }.to change{ oystercard.current_trip[:out] }.to eq station
       end
 
       # In order to know where I have been
@@ -87,13 +88,22 @@ describe 'User Stories' do
       end
 
       it 'entry station is stored in log current_trip' do
-        expect(oystercard.current_trip[:in]).to eq entry_station
+        expect(oystercard.current_trip[:in]).to eq station
       end
 
       it 'exit station is stored in current_trip at touch_out' do
         oystercard.touch_out(exit_station)
         expect(oystercard.current_trip[:out]).to eq exit_station
       end
+
+      # In order to know how far I have travelled
+      # As a customer
+      # I want to know what zone a station is in
+      it 'on touch in zone is stored in current trip' do
+        oystercard.touch_in(station)
+        expect(oystercard.current_trip[:in]).to eq station
+      end
+
     end
   end
 end

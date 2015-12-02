@@ -1,6 +1,8 @@
+require_relative 'station'
+
 class Oystercard
 
-  attr_reader :balance, :entry_station, :exit_station, :current_trip
+  attr_reader :balance, :entry_station, :exit_station, :current_trip, :log
   CARD_CAP = 90
   FARE = 1
 
@@ -9,6 +11,7 @@ class Oystercard
     @entry_station = nil
     @exit_station = nil
     @current_trip = {}
+    @log = {}
   end
 
   def top_up(amount)
@@ -20,14 +23,16 @@ class Oystercard
     traveling
   end
 
-  def touch_in(entry_station)
+  def touch_in(station)
     fail "Balance too low, please top up" if balance_too_low?
     @entry_station = entry_station
-    save_entry
+    save_entry(station)
   end
 
-  def touch_out(exit_station)
-    save_exit(exit_station)
+  def touch_out(station)
+    save_exit(station)
+    @log[@log.length + 1] = @current_trip
+    @current_trip = {}
     @entry_station = nil
     @exit_station = exit_station
     deduct(FARE)
@@ -37,8 +42,8 @@ class Oystercard
 
   private
 
-  def save_entry
-    @current_trip[:in] = entry_station
+  def save_entry(station)
+    @current_trip[:in] = station
   end
 
   def save_exit(exit_station)

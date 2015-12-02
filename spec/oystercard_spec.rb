@@ -56,6 +56,11 @@ describe Oystercard do
         expect(oystercard.current_trip[:in]).to eq entry_station
       end
 
+      it 'on touch in zone is stored in current trip' do
+        oystercard.touch_in(station)
+        expect
+      end
+
     end
 
     describe '#touch_out' do
