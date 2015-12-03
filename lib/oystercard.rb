@@ -36,6 +36,7 @@ class Oystercard
 
   def touch_out(station)
     penalty unless in_journey?
+    save_entry("Penalty Fare!") unless in_journey?
     deduct(FARE)
     save_exit(station)
     @log[@log.length + 1] = @current_trip

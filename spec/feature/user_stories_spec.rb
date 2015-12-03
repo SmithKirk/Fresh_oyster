@@ -129,5 +129,11 @@ describe 'User Stories' do
         expect{oystercard.touch_out("Victoria")}.to change{oystercard.balance}.by -penalty - fare
       end
     end
+
+    #When not touched in, update log
+    it 'when not touched in update log of penalty on touch out' do
+      oystercard.touch_out("Bank")
+      expect(oystercard.log).to eq ({1=>{:in => "Penalty Fare!", :out =>"Bank"}})
+    end
   end
 end

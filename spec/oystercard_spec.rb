@@ -103,6 +103,11 @@ describe Oystercard do
         oystercard.touch_out("Bank")
         expect{oystercard.touch_out("Victoria")}.to change{oystercard.balance}.by -penalty - fare
       end
+
+      it 'when not touched in update log of penalty on touch out' do
+        oystercard.touch_out("Bank")
+        expect(oystercard.log).to eq ({1=>{:in => "Penalty Fare!", :out =>"Bank"}})
+      end
     end
   end
 end
