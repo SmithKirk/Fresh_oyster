@@ -24,18 +24,20 @@ describe 'User Stories' do
     expect{oystercard.touch_in(station)}.to raise_error "Balance too low, please top up"
   end
 
-  #In order to pay for my journey
-  # As a customer
-  # When my journey is complete, I need the correct amount deducted from my card
-  it 'reduce balance by fare amount on touch_out' do
-    expect{oystercard.touch_out(exit_station)}.to change{oystercard.balance}.by -fare
-  end
-
   context 'topped up fresh oysters' do
 
     before do
       oystercard.top_up(card_cap)
     end
+
+    #In order to pay for my journey
+    # As a customer
+    # When my journey is complete, I need the correct amount deducted from my card
+    it 'reduce balance by fare amount on touch_out' do
+      oystercard.touch_in(station)
+      expect{oystercard.touch_out(exit_station)}.to change{oystercard.balance}.by -fare
+    end
+
 
     #In order to keep using public transport
     # As a customer
@@ -107,7 +109,7 @@ describe 'User Stories' do
 
       # In order to be charged correctly
       # As a customer
-      # I need a penalty charge deducted if I fail to touch in or out
+      # I need a penalty charge deducted if I fail to touch out
       it 'charge penalty when card not touched out' do
         oystercard.touch_in("Bank")
         expect{oystercard.touch_in("Victoria")}.to change{oystercard.balance}.by -penalty
@@ -119,6 +121,13 @@ describe 'User Stories' do
         expect(oystercard.log).to eq ({1=>{:in => station, :out => "Penalty Fare!"}})
       end
 
+      # In order to be charged correctly
+      # As a customer
+      # I need a penalty charge deducted if I fail to touch in
+      it 'charge penalty when card not touched in' do
+        oystercard.touch_out("Bank")
+        expect{oystercard.touch_out("Victoria")}.to change{oystercard.balance}.by -penalty - fare
+      end
     end
   end
 end
