@@ -94,9 +94,8 @@ describe 'User Stories' do
       end
 
       it 'exit station is stored in out: of log' do
-        oystercard.touch_in("Bank")
         oystercard.touch_out("kings cross")
-        expect(oystercard.log).to eq ({1=>{:in => "Bank", :out => "kings cross"}})
+        expect(oystercard.log).to eq ({1=>{:in => station, :out => "kings cross"}})
       end
 
       # In order to know how far I have travelled
@@ -112,6 +111,12 @@ describe 'User Stories' do
       it 'charge penalty when card not touched out' do
         oystercard.touch_in("Bank")
         expect{oystercard.touch_in("Victoria")}.to change{oystercard.balance}.by -penalty
+      end
+
+      #When not touched out, update log
+      it 'when not touched out update log of penalty on next touch in' do
+        oystercard.touch_in("Bank")
+        expect(oystercard.log).to eq ({1=>{:in => station, :out => "Penalty Fare!"}})
       end
 
     end

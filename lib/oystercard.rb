@@ -28,9 +28,10 @@ class Oystercard
     fail "Balance too low, please top up" if balance_too_low?
     if in_journey?
       penalty
+      save_entry(@entry_station)
+      touch_out("Penalty Fare!")
+      touch_in(station)
     end
-
-
     @entry_station = station
     save_entry(station)
   end
@@ -57,7 +58,7 @@ class Oystercard
   end
 
   def penalty
-    @balance -= PENALTY_FARE
+    @balance -= (PENALTY_FARE - FARE)
   end
 
   def traveling
