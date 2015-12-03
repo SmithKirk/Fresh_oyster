@@ -6,7 +6,7 @@ describe 'User Stories' do
   let(:fare){Oystercard::FARE}
   let(:balance){Oystercard::balance}
   let(:station){Station.new("bank",1)}
-
+  let(:penalty){Oystercard::PENALTY_FARE}
 
 
 
@@ -79,8 +79,6 @@ describe 'User Stories' do
       it 'entry station is cleared at touch out' do
         oystercard.touch_out("Kings cross")
         expect(oystercard.entry_station).to eq nil
-        # expect{ oystercard.touch_out(station) }.to change{ oystercard.current_trip[:out] }.to eq {}
-
       end
 
       # In order to know where I have been
@@ -106,6 +104,14 @@ describe 'User Stories' do
       # I want to know what zone a station is in
       it 'new stations have a zone' do
         expect(station.zone).to eq 1
+      end
+
+      # In order to be charged correctly
+      # As a customer
+      # I need a penalty charge deducted if I fail to touch in or out
+      it 'charge penalty when card not touched out' do
+        oystercard.touch_in("Bank")
+        expect{oystercard.touch_in("Victoria")}.to change{oystercard.balance}.by -penalty
       end
 
     end

@@ -6,6 +6,7 @@ describe Oystercard do
   let(:card_cap){Oystercard::CARD_CAP}
   let(:entry_station){ double(:entry_station) }
   let(:exit_station) { double(:exit_station) }
+  let(:penalty){Oystercard::PENALTY_FARE}
 
 
   it 'is expected to initialise with balance 0 ' do
@@ -56,7 +57,12 @@ describe Oystercard do
         expect(oystercard.current_trip[:in]).to eq entry_station
       end
 
-      
+      it 'charge penalty when card not touched out' do
+        oystercard.touch_in("Bank")
+        expect{oystercard.touch_in("Victoria")}.to change{oystercard.balance}.by -penalty
+      end
+
+
 
     end
 
