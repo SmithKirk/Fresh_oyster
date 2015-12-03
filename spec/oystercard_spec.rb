@@ -56,10 +56,7 @@ describe Oystercard do
         expect(oystercard.current_trip[:in]).to eq entry_station
       end
 
-      it 'on touch in zone is stored in current trip' do
-        oystercard.touch_in(station)
-        expect
-      end
+      
 
     end
 
@@ -86,9 +83,9 @@ describe Oystercard do
       end
 
       it 'exit station is stored in current_trip at touch_out' do
-        oystercard.touch_in(entry_station)
-        oystercard.touch_out(exit_station)
-        expect(oystercard.current_trip[:out]).to eq exit_station
+        oystercard.touch_in("Bank")
+        oystercard.touch_out("kings cross")
+        expect(oystercard.log).to eq ({1=>{:in => "Bank", :out => "kings cross"}})
       end
     end
   end

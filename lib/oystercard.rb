@@ -8,8 +8,8 @@ class Oystercard
 
   def initialize
     @balance = 0
-    @entry_station = nil
-    @exit_station = nil
+    # @entry_station = nil
+    # @exit_station = nil
     @current_trip = {}
     @log = {}
   end
@@ -25,7 +25,7 @@ class Oystercard
 
   def touch_in(station)
     fail "Balance too low, please top up" if balance_too_low?
-    @entry_station = entry_station
+    @entry_station = station
     save_entry(station)
   end
 
@@ -34,7 +34,7 @@ class Oystercard
     @log[@log.length + 1] = @current_trip
     @current_trip = {}
     @entry_station = nil
-    @exit_station = exit_station
+    @exit_station = station
     deduct(FARE)
   end
 
