@@ -88,7 +88,7 @@ describe 'User Stories' do
       # I want to see to all my previous trips
       it 'logs exit station' do
         oystercard.touch_out(exit_station)
-        expect(oystercard.exit_station).to eq exit_station
+        expect(oystercard.log[oystercard.log.length]).to include(out: exit_station)
       end
 
       it 'entry station is stored in log current_trip' do

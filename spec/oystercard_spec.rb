@@ -13,7 +13,7 @@ describe Oystercard do
     expect(oystercard.balance).to eq 0
   end
 
-  it 'is in_journey? false on initialisation' do #Could Topup
+  it 'is in_journey? false on initialisation' do
     expect(oystercard.in_journey?).to be false
   end
 
@@ -78,12 +78,12 @@ describe Oystercard do
         expect(oystercard).not_to be_in_journey
       end
 
-      it 'should change entry_station to nil at touch_out' do #touch out
+      it 'should change entry_station to nil at touch_out' do
         oystercard.touch_in(entry_station)
         expect{ oystercard.touch_out(exit_station) }.to change{ oystercard.entry_station }.to eq nil
       end
 
-      it 'is expected to reduce balance by fare on touch_out' do #touch out
+      it 'is expected to reduce balance by fare on touch_out' do
         oystercard.touch_in("Bank")
         expect{oystercard.touch_out(exit_station)}.to change{oystercard.balance}.by -fare
       end
